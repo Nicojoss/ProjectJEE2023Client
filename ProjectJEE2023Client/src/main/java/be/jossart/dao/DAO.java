@@ -26,7 +26,7 @@ public abstract class DAO<T> {
 		mapper = new ObjectMapper();
     }
     
-	private static URI getBaseURI() {
+	protected static URI getBaseURI() {
 		return UriBuilder.fromUri(baseUrl).build();
 	}
 

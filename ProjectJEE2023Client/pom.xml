@@ -35,10 +35,5 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
-		<dependency>
-			<groupId>ProjectJEE2023Server</groupId>
-			<artifactId>ProjectJEE2023Server</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
   </dependencies>
 </project>
