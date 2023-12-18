@@ -12,9 +12,9 @@ public class HomeServlet extends HttpServlet {
     public HomeServlet() {
         super();
     }
-
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/HomePage.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

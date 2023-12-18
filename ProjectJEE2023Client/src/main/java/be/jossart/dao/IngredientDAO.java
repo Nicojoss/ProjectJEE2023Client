@@ -6,6 +6,9 @@ import be.jossart.javabeans.Ingredient;
 
 public class IngredientDAO extends DAO<Ingredient>{
 	
+	public IngredientDAO() {
+		
+	}
 	@Override
 	public boolean create(Ingredient obj) {
 		// TODO Auto-generated method stub

@@ -20,7 +20,6 @@ public class SignInServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 		
 		String firstnameParam = request.getParameter("firstname");
 		String lastnameParam = request.getParameter("lastname");
@@ -28,29 +27,30 @@ public class SignInServlet extends HttpServlet {
 		String passwordParam = request.getParameter("password");
 		
 		if(request.getParameter("submit") != null) {
-			if(!parametersAreValid(firstnameParam, lastnameParam, usernameParam, passwordParam)) {
-				request.setAttribute("error", "You must enter at least 3 characters for the first name and last name and 5 characters for the username and password");
-			 	getServletContext().getRequestDispatcher("/WEB-INF/JSP/SignIn.jsp").forward(request, response);
-			}else {
+			if(!paramsAreValid(firstnameParam, lastnameParam, usernameParam, passwordParam)) {
 				Person person = new Person(firstnameParam, lastnameParam, usernameParam, passwordParam);
-				
-				if(person.insertPerson()) {
-					this.getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogInServlet.jsp").forward(request, response);
+				if(person.create()) {
+					request.setAttribute("success", "congratulations registration success please log in");
+					getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 				}else {
-					request.setAttribute("error", "An error during the register ! Go back to <a href=\"/ProjectJEE2023Client/SignInServlet\">Sign In Page</a>");
-				 	getServletContext().getRequestDispatcher("/WEB-INF/ErrorsJSP/Error.jsp").forward(request, response);
+					request.setAttribute("fail", "fail during the registration please try again!");
+                	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 				}
+			}else {
+				request.setAttribute("fail", "fail during the registration please try again!");
+            	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 			}
 		}
 	}
-	public boolean parametersAreValid(String firstnameParam, String lastnameParam, String usernameParam, String passwordParam) {
-		if(firstnameParam == null || firstnameParam.equals("") || firstnameParam.length() < 3
-				|| lastnameParam == null || lastnameParam.equals("") || lastnameParam.length() < 3
-				|| usernameParam == null || usernameParam.equals("") || usernameParam.length() < 5
-				|| passwordParam == null || passwordParam.equals("") || passwordParam.length() < 5) {
-			return false;
-		}
-		return true;
-	}
 
+	private boolean paramsAreValid(String firstnameParam, String lastnameParam, String usernameParam,
+			String passwordParam) {
+		if(firstnameParam == null || firstnameParam.equals("") || firstnameParam.length() < 3 ||
+				lastnameParam == null || lastnameParam.equals("") || lastnameParam.length() < 3 ||
+				usernameParam == null || usernameParam.equals("") || usernameParam.length() < 5 ||
+				passwordParam == null || passwordParam.equals("") || passwordParam.length() < 5) {
+			return true;
+		}
+		return false;
+	}
 }

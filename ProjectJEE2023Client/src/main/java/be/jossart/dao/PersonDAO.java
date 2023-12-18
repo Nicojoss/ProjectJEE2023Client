@@ -2,16 +2,14 @@ package be.jossart.dao;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
 import be.jossart.javabeans.Person;
 
-public class PersonDAO extends DAO<Person>{
+public class PersonDAO extends DAO<Person> {
 	public PersonDAO() {
-		
 	}
 	@Override
 	public boolean create(Person obj) {
@@ -20,9 +18,12 @@ public class PersonDAO extends DAO<Person>{
 		paramsPost.add("lastname", obj.getLastname());
 		paramsPost.add("username", obj.getUsername());
 		paramsPost.add("password", obj.getPassword());
-		
+
 		try {
-			 ClientResponse res = this.resource.path("person").post(ClientResponse.class, paramsPost);
+			 ClientResponse res = this.resource
+	 	                .path("person/create")
+	 	                .accept(MediaType.APPLICATION_JSON)
+	 	                .post(ClientResponse.class, paramsPost);
 			
 			if (res.getStatus() == 201) {
 				return true;

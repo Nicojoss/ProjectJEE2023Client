@@ -2,7 +2,7 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+import be.jossart.dao.DAO;
 import be.jossart.dao.PersonDAO;
 
 public class Person implements Serializable {
@@ -14,6 +14,7 @@ public class Person implements Serializable {
 	private String username;
 	private String password;
 	private ArrayList<Recipe> recipeList; // 0..* Donc c'est au moment ou la person va creer une recette qu'il faut l'initialiser
+	private static final DAO<Person> personDAO = new PersonDAO();
 	//CTOR
 	public Person(String firstnameParam, String lastnameParam, String usernameParam, String passwordParam) {
 		super();
@@ -31,9 +32,8 @@ public class Person implements Serializable {
 		this.password = password;
 	}
 	//METHODS
-	public boolean insertPerson() {
-		PersonDAO dao = new PersonDAO();
-		return dao.create(this);
+	public boolean create() {
+		return personDAO.create(this);
 	}
 	//GETTERS SETTERS
 	public int getIdPerson() {

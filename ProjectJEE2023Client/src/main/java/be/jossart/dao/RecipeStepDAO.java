@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import be.jossart.javabeans.RecipeStep;
 
-public class RecipeStepDAO extends DAO<RecipeStep>{
-
+public class RecipeStepDAO extends DAO<RecipeStep> {
+	public RecipeStepDAO() {
+		
+	}
 	@Override
 	public boolean create(RecipeStep obj) {
 		// TODO Auto-generated method stub
