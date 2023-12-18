@@ -15,7 +15,7 @@
 				<tr>
 					<td>Firstname : </td>
 					<td>
-						<input type="text" name="firstname" id="firstname" value="" size="20"/>
+						<input type="text" name="firstname" id="firstname" value="" size="20" title="Minimum 3 characters"/>
 						<span class="comment">Minimum 3 characters</span>
 					</td>
 				</tr>
