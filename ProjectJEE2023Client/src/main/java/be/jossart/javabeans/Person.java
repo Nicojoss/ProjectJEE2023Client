@@ -31,6 +31,8 @@ public class Person implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
+	public Person() {
+	}
 	//METHODS
 	public boolean create() {
 		return personDAO.create(this);
@@ -72,5 +74,9 @@ public class Person implements Serializable {
 	}
 	public void setRecipeList(ArrayList<Recipe> recipeList) {
 		this.recipeList = recipeList;
+	}
+	public static Person login(String usernameParam, String passwordParam) {
+		PersonDAO dao = new PersonDAO();
+		return dao.login(usernameParam, passwordParam);
 	}
 }

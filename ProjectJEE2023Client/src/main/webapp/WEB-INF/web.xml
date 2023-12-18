@@ -14,12 +14,15 @@
   	<servlet-name>HomeServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.HomeServlet</servlet-class>
   </servlet>
-  
+
   <servlet>
   	<servlet-name>SignInServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.SignInServlet</servlet-class>
   </servlet>
-  
+  <servlet>
+  	<servlet-name>LogInServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.LogInServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>HomeServlet</servlet-name>
   	<url-pattern>/</url-pattern>
@@ -32,5 +35,11 @@
   	<url-pattern>/SignInServlet</url-pattern>
   	<url-pattern>/signin</url-pattern>
   	<url-pattern>/SignIn</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LogInServlet</servlet-name>
+  	<url-pattern>/LogInServlet</url-pattern>
+  	<url-pattern>/login</url-pattern>
+  	<url-pattern>/LogIn</url-pattern>
   </servlet-mapping>
 </web-app>
