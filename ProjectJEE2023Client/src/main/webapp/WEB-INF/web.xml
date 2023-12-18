@@ -11,13 +11,25 @@
   </welcome-file-list>
   
   <servlet>
-  	<servlet-name>Home</servlet-name>
-  	<servlet-class>/ProjectJEE2023Client/src/main/java/be/jossart/servlets/Home.java</servlet-class>
+  	<servlet-name>HomeServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.HomeServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>SignInServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.SignInServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>Home</servlet-name>
+  	<servlet-name>HomeServlet</servlet-name>
+  	<url-pattern>/</url-pattern>
+  	<url-pattern>/HomeServlet</url-pattern>
   	<url-pattern>/home</url-pattern>
   	<url-pattern>/index</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SignInServlet</servlet-name>
+  	<url-pattern>/SignInServlet</url-pattern>
+  	<url-pattern>/signin</url-pattern>
+  	<url-pattern>/SignIn</url-pattern>
   </servlet-mapping>
 </web-app>

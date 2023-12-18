@@ -2,39 +2,38 @@ package be.jossart.dao;
 
 import java.util.ArrayList;
 
-import be.jossart.javabeans.Ingredient;
+import be.jossart.javabeans.Recipe;
 
-public class IngredientDAO extends DAO<Ingredient>{
-	
-	public IngredientDAO() {
+public class RecipeDAO extends DAO<Recipe> {
+	public RecipeDAO() {
 		
 	}
 	@Override
-	public boolean create(Ingredient obj) {
+	public boolean create(Recipe obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delete(Ingredient obj) {
+	public boolean delete(Recipe obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(Ingredient obj) {
+	public boolean update(Recipe obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Ingredient find(int id) {
+	public Recipe find(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Ingredient> findAll(Object obj) {
+	public ArrayList<Recipe> findAll(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}

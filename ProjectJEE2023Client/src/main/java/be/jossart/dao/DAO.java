@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.UriBuilder;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
