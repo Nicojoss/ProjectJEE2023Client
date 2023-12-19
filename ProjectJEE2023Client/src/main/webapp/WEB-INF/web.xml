@@ -23,6 +23,10 @@
   	<servlet-name>LogInServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.LogInServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ManageAccountServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.ManageAccountServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>HomeServlet</servlet-name>
   	<url-pattern>/</url-pattern>
@@ -41,5 +45,12 @@
   	<url-pattern>/LogInServlet</url-pattern>
   	<url-pattern>/login</url-pattern>
   	<url-pattern>/LogIn</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ManageAccountServlet</servlet-name>
+  	<url-pattern>/ManageAccountServlet</url-pattern>
+  	<url-pattern>/manageaccountservlet</url-pattern>
+  	<url-pattern>/ManageAccount</url-pattern>
+  	<url-pattern>/manageaccount</url-pattern>
   </servlet-mapping>
 </web-app>
