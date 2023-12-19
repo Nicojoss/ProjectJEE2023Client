@@ -19,7 +19,13 @@
        <p><%= request.getAttribute("fail")%></p> 
        </div>
     <% } %>
-	<a href="/ProjectJEE2023Client/LogInServlet">Log In</a>
-	<a href="/ProjectJEE2023Client/SignInServlet">Sign in</a>
+	<% 
+        if (session.getAttribute("person") == null) { 
+    %>
+        <button onclick="window.location='/ProjectJEE2023Client/LogInServlet'">Log In</button>
+        <button onclick="window.location='/ProjectJEE2023Client/SignInServlet'">Sign In</button>
+    <% } else { %>
+        <button onclick="window.location='/ProjectJEE2023Client/ManageAccountServlet'">Manage my account</button>
+    <% } %>
 </body>
 </html>

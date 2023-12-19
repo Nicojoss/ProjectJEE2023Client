@@ -75,9 +75,10 @@ public class PersonDAO extends DAO<Person> {
 			if (res.getStatus() == 200) {
 				String response = res.getEntity(String.class);
 				JSONObject json = new JSONObject(response);
+				int idPerson = json.getInt("idPerson");
 				String firstname = json.getString("firstname");
 				String lastname = json.getString("lastname");
-				Person person = new Person(firstname, lastname, username, password);
+				Person person = new Person(idPerson, firstname, lastname, username, password);
 				
 				return person;
 			}
