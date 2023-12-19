@@ -37,6 +37,20 @@ public class Person implements Serializable {
 	public boolean create() {
 		return personDAO.create(this);
 	}
+	public static Person login(String usernameParam, String passwordParam) {
+		PersonDAO dao = new PersonDAO();
+		return dao.login(usernameParam, passwordParam);
+	}
+	public boolean updatePassword(String passwordParam) {
+		PersonDAO dao = new PersonDAO();
+		if(dao.updatePassword(this, passwordParam)) {
+			this.setPassword(passwordParam);
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 	//GETTERS SETTERS
 	public int getIdPerson() {
 		return idPerson;
@@ -74,9 +88,5 @@ public class Person implements Serializable {
 	}
 	public void setRecipeList(ArrayList<Recipe> recipeList) {
 		this.recipeList = recipeList;
-	}
-	public static Person login(String usernameParam, String passwordParam) {
-		PersonDAO dao = new PersonDAO();
-		return dao.login(usernameParam, passwordParam);
 	}
 }

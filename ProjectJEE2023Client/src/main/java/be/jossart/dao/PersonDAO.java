@@ -88,4 +88,21 @@ public class PersonDAO extends DAO<Person> {
 		}
 		return null;
 	}
+	public boolean updatePassword(Person person, String passwordParam) {
+	    MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
+	    paramsPost.add("idPerson", String.valueOf(person.getIdPerson()));
+	    paramsPost.add("newPassword", passwordParam);
+
+	    try {
+	        ClientResponse res = this.resource
+	                .path("person/updatePassword")
+	                .accept(MediaType.APPLICATION_JSON)
+	                .put(ClientResponse.class, paramsPost);
+
+	        return res.getStatus() == 200;
+	    } catch (Exception ex) {
+	        System.out.println(ex.getMessage());
+	        return false;
+	    }
+	}
 }
