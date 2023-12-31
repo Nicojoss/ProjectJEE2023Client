@@ -48,7 +48,8 @@ public class SignInServlet extends HttpServlet {
 		if(firstnameParam == null || firstnameParam.equals("") || firstnameParam.length() < 3 ||
 				lastnameParam == null || lastnameParam.equals("") || lastnameParam.length() < 3 ||
 				usernameParam == null || usernameParam.equals("") || usernameParam.length() < 5 ||
-				passwordParam == null || passwordParam.equals("") || passwordParam.length() < 5) {
+				passwordParam == null || passwordParam.equals("") || passwordParam.length() < 5 ||
+	            !passwordParam.matches("[A-Z]+")) {
 			return true;
 		}
 		return false;
