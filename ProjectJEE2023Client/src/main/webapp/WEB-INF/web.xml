@@ -9,7 +9,18 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
-  
+  <!-- FILTERS -->
+  <filter>
+	<filter-name>LoginFilter</filter-name>
+	<filter-class>be.jossart.filters.LoginFilter</filter-class>
+  </filter>
+	
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
+  	<servlet-name>ManageAccountServlet</servlet-name>
+  </filter-mapping>	
+	
+  <!-- SERVLET -->
   <servlet>
   	<servlet-name>HomeServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.HomeServlet</servlet-class>

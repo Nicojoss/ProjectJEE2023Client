@@ -7,17 +7,6 @@
 <title>Manage account page</title>
 </head>
 <body>
-	<% 
-	if (session.isNew() || session.getAttribute("person") == null) { 
-    %>
-        <script>window.location.href = '/ProjectJEE2023Client/LogInServlet';</script>
-    <% } else { %>
-    	<%
-        	if (request.getAttribute("fail") != null) {%>
-        	<div class="alert alert-danger">
-       	<p><%= request.getAttribute("fail")%></p> 
-       	</div>
-    	<% } %>
         <form action="ManageAccountServlet" method="POST">
 		<table border="1" cellspacing="0" cellpadding="5">
 			<tr>
@@ -33,6 +22,5 @@
 			</tr>
 		</table>
 	</form>
-    <% } %>
 </body>
 </html>
