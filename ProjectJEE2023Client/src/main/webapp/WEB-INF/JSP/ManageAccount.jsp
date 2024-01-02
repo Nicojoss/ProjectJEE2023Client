@@ -7,6 +7,7 @@
 <title>Manage account page</title>
 </head>
 <body>
+	<%@ include file="LogoutPartialView.jsp" %>
         <form action="ManageAccountServlet" method="POST">
 		<table border="1" cellspacing="0" cellpadding="5">
 			<tr>
