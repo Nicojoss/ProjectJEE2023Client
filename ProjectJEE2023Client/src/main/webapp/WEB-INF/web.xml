@@ -25,10 +25,17 @@
   	<servlet-name>HomeServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.HomeServlet</servlet-class>
   </servlet>
-
-  <servlet>
+<servlet>
   	<servlet-name>SignInServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.SignInServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>SearchRecipeServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.SearchRecipeServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>RecipeDetailsServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.RecipeDetailsServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>LogInServlet</servlet-name>
@@ -74,5 +81,13 @@
   	<url-pattern>/logout</url-pattern>
   	<url-pattern>/Logout</url-pattern>
   	<url-pattern>/LogOut</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SearchRecipeServlet</servlet-name>
+  	<url-pattern>/SearchRecipeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RecipeDetailsServlet</servlet-name>
+  	<url-pattern>/RecipeDetailsServlet</url-pattern>
   </servlet-mapping>
 </web-app>

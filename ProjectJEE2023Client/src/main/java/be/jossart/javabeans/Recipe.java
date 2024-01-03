@@ -2,6 +2,9 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
+import be.jossart.dao.RecipeDAO;
 
 public class Recipe implements Serializable{
 
@@ -67,5 +70,9 @@ public class Recipe implements Serializable{
 	}
 	public void setRecipeStepList(ArrayList<RecipeStep> recipeStepList) {
 		this.recipeStepList = recipeStepList;
+	}
+	public static List<Recipe> findRecipe(String recherche){
+		RecipeDAO dao = new RecipeDAO();
+		return dao.findRecipe(recherche);
 	}
 }

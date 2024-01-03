@@ -27,5 +27,10 @@
     <% } else { %>
         <button onclick="window.location='/ProjectJEE2023Client/ManageAccountServlet'">Manage my account</button>
     <% } %>
+    <h1>Rechercher une recette :</h1> <br>
+    <form action ="SearchRecipeServlet" method="POST">
+    <input type="text" id="recherche" name="recherche"><br>
+    <input type="submit" value="Rechercher">
+    </form>
 </body>
 </html>
