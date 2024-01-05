@@ -1,6 +1,8 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Ingredient implements Serializable{
 	//ATTRIBUTES
@@ -8,15 +10,16 @@ public class Ingredient implements Serializable{
 	private int idIngredient;
 	private String name;
 	private IngredientType type;
-	private Recipe recipe;
+	private ArrayList<RecipeIngredient> recipeIngredientList;
 	//CTOR
 	public Ingredient() {
 	}
-	public Ingredient(int idIngredient, String name, IngredientType type, Recipe recipe) {
+	public Ingredient(int idIngredient, String name, IngredientType type,
+			ArrayList<RecipeIngredient> recipeIngredientList) {
 		this.idIngredient = idIngredient;
 		this.name = name;
 		this.type = type;
-		this.recipe = recipe;
+		this.recipeIngredientList = recipeIngredientList;
 	}
 	//METHODS
 	//GETTERS SETTERS
@@ -38,11 +41,32 @@ public class Ingredient implements Serializable{
 	public void setType(IngredientType type) {
 		this.type = type;
 	}
-	public Recipe getRecipe() {
-		return recipe;
+	public ArrayList<RecipeIngredient> getRecipeIngredientList() {
+		return recipeIngredientList;
 	}
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
+	public void setRecipeIngredientList(ArrayList<RecipeIngredient> recipeIngredientList) {
+		this.recipeIngredientList = recipeIngredientList;
 	}
-
+	@Override
+	public String toString() {
+		return "Ingredient [idIngredient=" + idIngredient + ","
+				+ " name=" + name + ", type=" + type + ", recipeIngredientList=" + recipeIngredientList
+				+ "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(idIngredient, name, recipeIngredientList, type);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ingredient other = (Ingredient) obj;
+		return idIngredient == other.idIngredient && Objects.equals(name, other.name)
+				&& Objects.equals(recipeIngredientList, other.recipeIngredientList) && type == other.type;
+	}
 }

@@ -11,23 +11,23 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
-import be.jossart.javabeans.Person;
-import be.jossart.javabeans.Recipe;
-import be.jossart.javabeans.RecipeGender;
+import be.jossart.javabeans.RecipeIngredient;
 
-public class RecipeDAO extends DAO<Recipe> {
-    public RecipeDAO() {
+public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
+
+    public RecipeIngredientDAO() {
     }
+
     @Override
-    public boolean create(Recipe obj) {
+    public boolean create(RecipeIngredient obj) {
         MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
-        paramsPost.add("name", obj.getName());
-        paramsPost.add("gender", obj.getRecipeGender().toString());
-        paramsPost.add("idPerson", Integer.toString(obj.getPerson().getIdPerson()));
+        paramsPost.add("idRecipe", Integer.toString(obj.getIdRecipe()));
+        paramsPost.add("idIngredient", Integer.toString(obj.getIdIngredient()));
+        paramsPost.add("quantity", Double.toString(obj.getQuantity()));
 
         try {
             ClientResponse res = this.resource
-                    .path("recipe/create")
+                    .path("recipeIngredient/create")
                     .accept(MediaType.APPLICATION_JSON)
                     .post(ClientResponse.class, paramsPost);
 
@@ -39,10 +39,10 @@ public class RecipeDAO extends DAO<Recipe> {
     }
 
     @Override
-    public boolean delete(Recipe obj) {
+    public boolean delete(RecipeIngredient obj) {
         try {
             ClientResponse res = this.resource
-                    .path("recipe/delete/" + obj.getIdRecipe())
+                    .path("recipeIngredient/delete/" + obj.getIdRecipe() + "/" + obj.getIdIngredient())
                     .accept(MediaType.APPLICATION_JSON)
                     .delete(ClientResponse.class);
 
@@ -54,15 +54,15 @@ public class RecipeDAO extends DAO<Recipe> {
     }
 
     @Override
-    public boolean update(Recipe obj) {
+    public boolean update(RecipeIngredient obj) {
         MultivaluedMap<String, String> paramsPut = new MultivaluedMapImpl();
-        paramsPut.add("name", obj.getName());
-        paramsPut.add("gender", obj.getRecipeGender().toString());
-        paramsPut.add("idPerson", Integer.toString(obj.getPerson().getIdPerson()));
+        paramsPut.add("idRecipe", Integer.toString(obj.getIdRecipe()));
+        paramsPut.add("idIngredient", Integer.toString(obj.getIdIngredient()));
+        paramsPut.add("quantity", Double.toString(obj.getQuantity()));
 
         try {
             ClientResponse res = this.resource
-                    .path("recipe/update/" + obj.getIdRecipe())
+                    .path("recipeIngredient/update/" + obj.getIdRecipe() + "/" + obj.getIdIngredient())
                     .accept(MediaType.APPLICATION_JSON)
                     .put(ClientResponse.class, paramsPut);
 
@@ -74,10 +74,15 @@ public class RecipeDAO extends DAO<Recipe> {
     }
 
     @Override
-    public Recipe find(int id) {
+    public RecipeIngredient find(int id) {
+        // This method is not implemented in your provided code
+        return null;
+    }
+
+    public RecipeIngredient find(int idRecipe, int idIngredient) {
         try {
             ClientResponse res = this.resource
-                    .path("recipe/get/" + id)
+                    .path("recipeIngredient/get/" + idRecipe + "/" + idIngredient)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -86,20 +91,16 @@ public class RecipeDAO extends DAO<Recipe> {
                 JSONObject json = new JSONObject(response);
 
                 int recipeId = json.getInt("idRecipe");
-                String name = json.getString("name");
-                String gender = json.getString("recipeGender");
-                int idPerson = json.getInt("idPerson");
+                int ingredientId = json.getInt("idIngredient");
+                double quantity = json.getDouble("quantity");
 
-                Person person = new Person(idPerson, null, null, null, null);
-                RecipeGender recipeGender = RecipeGender.valueOf(gender);
+                RecipeIngredient recipeIngredient = new RecipeIngredient(recipeId, ingredientId, quantity, null, null);
 
-                Recipe recipe = new Recipe(recipeId, name, person, recipeGender, null, null);
-
-                return recipe;
+                return recipeIngredient;
             } else if (res.getStatus() == 404) {
                 return null;
             } else {
-                System.out.println("Failed to retrieve recipe. Status: " + res.getStatus());
+                System.out.println("Failed to retrieve recipe ingredient. Status: " + res.getStatus());
                 return null;
             }
         } catch (JSONException ex) {
@@ -109,19 +110,18 @@ public class RecipeDAO extends DAO<Recipe> {
     }
 
     @Override
-    public ArrayList<Recipe> findAll(Object obj) {
+    public ArrayList<RecipeIngredient> findAll(Object obj) {
         // TODO: Implement this method based on your API requirements
         return null;
     }
 
-    public Recipe findId(Recipe recipe) {
+    public RecipeIngredient findId(RecipeIngredient recipeIngredient) {
         try {
-            String name = recipe.getName();
-            String gender = recipe.getRecipeGender().toString();
-            int idPerson = recipe.getPerson().getIdPerson();
+            int idRecipe = recipeIngredient.getIdRecipe();
+            double quantity = recipeIngredient.getQuantity();
 
             ClientResponse response = this.resource
-                    .path("recipe/getId/" + name + "/" + gender + "/" + idPerson)
+                    .path("recipeIngredient/getId/" + idRecipe + "/" + quantity)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -129,19 +129,16 @@ public class RecipeDAO extends DAO<Recipe> {
                 String responseJson = response.getEntity(String.class);
                 JSONObject json = new JSONObject(responseJson);
 
-                int recipeId = json.getInt("idRecipe");
-                String retrievedName = json.getString("name");
-                String retrievedGender = json.getString("recipeGender");
-                int retrievedIdPerson = json.getInt("idPerson");
+                int retrievedRecipeId = json.getInt("idRecipe");
+                int retrievedIngredientId = json.getInt("idIngredient");
+                double retrievedQuantity = json.getDouble("quantity");
 
-                Person retrievedPerson = new Person(retrievedIdPerson, null, null, null, null);
-                RecipeGender retrievedRecipeGender = RecipeGender.valueOf(retrievedGender);
-
-                return new Recipe(recipeId, retrievedName, retrievedPerson, retrievedRecipeGender, null, null);
+                // Assuming you have a constructor that takes these parameters
+                return new RecipeIngredient(retrievedRecipeId, retrievedIngredientId, retrievedQuantity, null, null);
             } else if (response.getStatus() == 404) {
                 return null;
             } else {
-                System.out.println("Failed to retrieve recipe. Status: " + response.getStatus());
+                System.out.println("Failed to retrieve recipe ingredient. Status: " + response.getStatus());
                 return null;
             }
         } catch (JSONException ex) {
@@ -150,3 +147,4 @@ public class RecipeDAO extends DAO<Recipe> {
         }
     }
 }
+

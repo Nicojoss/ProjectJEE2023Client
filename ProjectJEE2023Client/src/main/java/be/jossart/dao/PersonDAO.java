@@ -2,9 +2,11 @@ package be.jossart.dao;
 
 import java.util.ArrayList;
 
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.ClientResponse;
@@ -51,16 +53,73 @@ public class PersonDAO extends DAO<Person> {
 	}
 
 	@Override
-	public Person find(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Person find(int id) {
+        try {
+            ClientResponse res = this.resource
+                    .path("person/get/" + id)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(ClientResponse.class);
 
-	@Override
-	public ArrayList<Person> findAll(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            if (res.getStatus() == 200) {
+                String response = res.getEntity(String.class);
+                JSONObject json = new JSONObject(response);
+
+                int idPerson = json.getInt("idPerson");
+                String firstname = json.getString("firstname");
+                String lastname = json.getString("lastname");
+                String username = json.getString("username");
+                String password = json.getString("password");
+
+                return new Person(idPerson, firstname, lastname, username, password);
+            } else if (res.getStatus() == 404) {
+                return null;
+            } else {
+                System.out.println("Failed to retrieve person. Status: " + res.getStatus());
+                return null;
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public ArrayList<Person> findAll(Object obj) {
+        // TODO: Implement this method based on your API requirements
+        return null;
+    }
+
+    public Person findId(Person person) {
+        try {
+            int idPerson = person.getIdPerson();
+
+            ClientResponse response = this.resource
+                    .path("person/getId/" + idPerson)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(ClientResponse.class);
+
+            if (response.getStatus() == 200) {
+                String responseJson = response.getEntity(String.class);
+                JSONObject json = new JSONObject(responseJson);
+
+                int retrievedIdPerson = json.getInt("idPerson");
+                String retrievedFirstname = json.getString("firstname");
+                String retrievedLastname = json.getString("lastname");
+                String retrievedUsername = json.getString("username");
+                String retrievedPassword = json.getString("password");
+
+                return new Person(retrievedIdPerson, retrievedFirstname, retrievedLastname, retrievedUsername, retrievedPassword);
+            } else if (response.getStatus() == 404) {
+                return null;
+            } else {
+                System.out.println("Failed to retrieve person. Status: " + response.getStatus());
+                return null;
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
 	public Person login(String username, String password) {
 		MultivaluedMap<String, String> paramsPost = new MultivaluedMapImpl();
 		paramsPost.add("username", username);
