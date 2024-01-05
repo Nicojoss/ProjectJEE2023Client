@@ -37,7 +37,7 @@
 	    			<td>Password: </td>
 	    			<td>
 	    				<input type="password" name="password" id="password" value="" size="20" title="Minimum 5 characters"/>
-	    				<span class="comment">Le mot de passe doit contenir uniquement des lettres majuscules et minimum 5 characters</span>
+	    				<span class="comment">Password only in capital letters and minimum 5 characters</span>
 	   				</td>
 	 			</tr>
 	 			<tr>
@@ -49,4 +49,4 @@
 			</table>
 		</form>
 </body>
-</html>
+</html> 

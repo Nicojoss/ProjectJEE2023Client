@@ -1,6 +1,7 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import be.jossart.dao.DAO;
@@ -15,7 +16,6 @@ public class RecipeIngredient implements Serializable{
 	private Ingredient ingredient;
 	private Recipe recipe;
 	private static final DAO<RecipeIngredient> recipeIngredientDAO = new RecipeIngredientDAO();
-
 	//CTOR
 	public RecipeIngredient() {}
 	public RecipeIngredient(int idRecipe, int idIngredient, double quantity,
@@ -52,6 +52,10 @@ public class RecipeIngredient implements Serializable{
 	public static RecipeIngredient findId(RecipeIngredient recipeIngredient) {
 		RecipeIngredientDAO dao = new RecipeIngredientDAO();
 		return dao.findId(recipeIngredient);
+	}
+	public static List<Integer> findIds(int id) {
+		RecipeIngredientDAO dao = new RecipeIngredientDAO();
+		return dao.findIds(id);
 	}
 	//GETTERS AND SETTERS
 	public int getIdIngredient() {

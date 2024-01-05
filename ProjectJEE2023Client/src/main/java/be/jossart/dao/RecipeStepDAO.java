@@ -1,10 +1,13 @@
 package be.jossart.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,7 +108,7 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
 
     @Override
     public ArrayList<RecipeStep> findAll(Object obj) {
-        // TODO: Implement this method based on your API requirements
+    	// TODO Auto-generated method stub
         return null;
     }
 
@@ -115,7 +118,7 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
             int recipeId = recipeStep.getRecipe().getIdRecipe();
 
             ClientResponse response = this.resource
-                    .path("recipeStep/getId/" + recipeId + "/" + instruction)  // Adjusted path
+                    .path("recipeStep/getId/" + recipeId + "/" + instruction)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -141,5 +144,33 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
             return null;
         }
     }
+    public List<Integer> findIds(int recipeId) {
+        try {
+            ClientResponse response = this.resource
+                    .path("recipeStep/findIds/" + recipeId)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(ClientResponse.class);
+
+            if (response.getStatus() == 200) {
+                String responseJson = response.getEntity(String.class);
+                JSONArray jsonArray = new JSONArray(responseJson);
+
+                List<Integer> stepIds = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    stepIds.add(jsonArray.getInt(i));
+                }
+
+                return stepIds;
+            } else if (response.getStatus() == 404) {
+                return Collections.emptyList();
+            } else {
+                System.out.println("Failed to retrieve recipe step IDs. Status: " + response.getStatus());
+                return Collections.emptyList();
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            return Collections.emptyList();
+        }
+     }
 }
 

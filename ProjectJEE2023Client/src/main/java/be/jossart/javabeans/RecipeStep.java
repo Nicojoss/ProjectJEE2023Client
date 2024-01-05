@@ -1,7 +1,10 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import be.jossart.dao.DAO;
+import be.jossart.dao.RecipeStepDAO;
 
 public class RecipeStep implements Serializable{
 	//ATTRIBUTES
@@ -9,6 +12,7 @@ public class RecipeStep implements Serializable{
 	private int idRecipeStep;
 	private String instruction;
 	private Recipe recipe;
+	private static final DAO<RecipeStep> recipeStepDAO = new RecipeStepDAO();
 	//CTOR
 	public RecipeStep() { 
 	}
@@ -18,6 +22,26 @@ public class RecipeStep implements Serializable{
 		this.recipe = recipe;
 	}
 	//METHODS
+	public boolean create() {
+		return recipeStepDAO.create(this);
+	}
+	public boolean delete() {
+		return recipeStepDAO.delete(this);
+	}
+	public boolean update() {
+		return recipeStepDAO.update(this);
+	}
+	public static RecipeStep find(int id) {
+		return recipeStepDAO.find(id);
+	}
+	public static RecipeStep findId(RecipeStep recipeStep) {
+		RecipeStepDAO dao = new RecipeStepDAO();
+		return dao.findId(recipeStep);
+	}
+	public static List<Integer> findIds(int id) {
+		RecipeStepDAO dao = new RecipeStepDAO();
+		return dao.findIds(id);
+	}
 	//GETTERS SETTERS
 	public int getIdRecipeStep() {
 		return idRecipeStep;

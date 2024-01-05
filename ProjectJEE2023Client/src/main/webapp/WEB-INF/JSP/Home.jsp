@@ -26,6 +26,8 @@
         <button onclick="window.location='/ProjectJEE2023Client/SignInServlet'">Sign In</button>
     <% } else { %>
         <button onclick="window.location='/ProjectJEE2023Client/ManageAccountServlet'">Manage my account</button>
+        <button onclick="window.location='/ProjectJEE2023Client/CreateRecipeServlet'">Create a new recipe</button>
+        <button onclick="window.location='/ProjectJEE2023Client/ConsultOwnRecipeServlet'">Consult your recipe</button>
     <% } %>
 </body>
 </html>

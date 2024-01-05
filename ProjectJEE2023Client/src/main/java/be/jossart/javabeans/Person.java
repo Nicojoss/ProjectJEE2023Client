@@ -1,6 +1,7 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -52,6 +53,13 @@ public class Person implements Serializable {
 			return false;
 		}
 		
+	}
+	public static Person find(int id) {
+		return personDAO.find(id);
+	}
+	public static Person findId(Person person) {
+		PersonDAO dao = new PersonDAO();
+		return dao.findId(person);
 	}
 	//GETTERS SETTERS
 	public int getIdPerson() {

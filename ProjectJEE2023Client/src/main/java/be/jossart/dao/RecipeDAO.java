@@ -1,10 +1,13 @@
 package be.jossart.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -110,7 +113,7 @@ public class RecipeDAO extends DAO<Recipe> {
 
     @Override
     public ArrayList<Recipe> findAll(Object obj) {
-        // TODO: Implement this method based on your API requirements
+    	// TODO Auto-generated method stub
         return null;
     }
 
@@ -147,6 +150,35 @@ public class RecipeDAO extends DAO<Recipe> {
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
             return null;
+        }
+    }
+    
+    public List<Integer> findIds(int idPerson) {
+        try {
+            ClientResponse response = this.resource
+                    .path("recipe/findIds/" + idPerson)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(ClientResponse.class);
+
+            if (response.getStatus() == 200) {
+                String responseJson = response.getEntity(String.class);
+                JSONArray jsonArray = new JSONArray(responseJson);
+
+                List<Integer> recipeIds = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    recipeIds.add(jsonArray.getInt(i));
+                }
+
+                return recipeIds;
+            } else if (response.getStatus() == 404) {
+                return Collections.emptyList();
+            } else {
+                System.out.println("Failed to retrieve recipe IDs. Status: " + response.getStatus());
+                return Collections.emptyList();
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            return Collections.emptyList();
         }
     }
 }

@@ -1,8 +1,12 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
+import be.jossart.dao.DAO;
+import be.jossart.dao.IngredientDAO;
 
 public class Ingredient implements Serializable{
 	//ATTRIBUTES
@@ -11,6 +15,7 @@ public class Ingredient implements Serializable{
 	private String name;
 	private IngredientType type;
 	private ArrayList<RecipeIngredient> recipeIngredientList;
+	private static final DAO<Ingredient> ingredientDAO = new IngredientDAO();
 	//CTOR
 	public Ingredient() {
 	}
@@ -22,6 +27,22 @@ public class Ingredient implements Serializable{
 		this.recipeIngredientList = recipeIngredientList;
 	}
 	//METHODS
+	public boolean create() {
+		return ingredientDAO.create(this);
+	}
+	public boolean delete() {
+		return ingredientDAO.delete(this);
+	}
+	public boolean update() {
+		return ingredientDAO.update(this);
+	}
+	public static Ingredient find(int id) {
+		return ingredientDAO.find(id);
+	}
+	public static Ingredient findId(Ingredient ingredient) {
+		IngredientDAO dao = new IngredientDAO();
+		return dao.findId(ingredient);
+	}
 	//GETTERS SETTERS
 	public int getIdIngredient() {
 		return idIngredient;

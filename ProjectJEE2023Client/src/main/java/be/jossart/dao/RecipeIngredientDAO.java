@@ -1,10 +1,13 @@
 package be.jossart.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,7 +78,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
 
     @Override
     public RecipeIngredient find(int id) {
-        // This method is not implemented in your provided code
+    	// TODO Auto-generated method stub
         return null;
     }
 
@@ -111,7 +114,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
 
     @Override
     public ArrayList<RecipeIngredient> findAll(Object obj) {
-        // TODO: Implement this method based on your API requirements
+    	// TODO Auto-generated method stub
         return null;
     }
 
@@ -132,8 +135,6 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
                 int retrievedRecipeId = json.getInt("idRecipe");
                 int retrievedIngredientId = json.getInt("idIngredient");
                 double retrievedQuantity = json.getDouble("quantity");
-
-                // Assuming you have a constructor that takes these parameters
                 return new RecipeIngredient(retrievedRecipeId, retrievedIngredientId, retrievedQuantity, null, null);
             } else if (response.getStatus() == 404) {
                 return null;
@@ -144,6 +145,34 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
         } catch (JSONException ex) {
             System.out.println(ex.getMessage());
             return null;
+        }
+    }
+    public List<Integer> findIds(int recipeId) {
+        try {
+            ClientResponse response = this.resource
+                    .path("recipeIngredient/findIds/" + recipeId)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(ClientResponse.class);
+
+            if (response.getStatus() == 200) {
+                String responseJson = response.getEntity(String.class);
+                JSONArray jsonArray = new JSONArray(responseJson);
+
+                List<Integer> ingredientIds = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    ingredientIds.add(jsonArray.getInt(i));
+                }
+
+                return ingredientIds;
+            } else if (response.getStatus() == 404) {
+                return Collections.emptyList();
+            } else {
+                System.out.println("Failed to retrieve recipe ingredient IDs. Status: " + response.getStatus());
+                return Collections.emptyList();
+            }
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            return Collections.emptyList();
         }
     }
 }

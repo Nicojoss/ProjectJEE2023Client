@@ -1,8 +1,13 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import be.jossart.dao.DAO;
+import be.jossart.dao.RecipeDAO;
 
 public class Recipe implements Serializable{
 
@@ -14,9 +19,10 @@ public class Recipe implements Serializable{
 	private RecipeGender recipeGender;
 	private ArrayList<RecipeIngredient> recipeIngredientList;
 	private ArrayList<RecipeStep> recipeStepList;
+	private static final DAO<Recipe> recipeDAO = new RecipeDAO();
 	
 	//CTOR
-	public Recipe() { // Je les aies mis si on en a pas besoin on supprime à la fin
+	public Recipe() {
 		recipeIngredientList = new ArrayList<>();
 		recipeStepList = new ArrayList<>();
 	}
@@ -32,7 +38,26 @@ public class Recipe implements Serializable{
 		this.recipeStepList = recipeStepList;
 	}
 	//METHODS
-
+	public boolean create() {
+		return recipeDAO.create(this);
+	}
+	public boolean delete() {
+		return recipeDAO.delete(this);
+	}
+	public boolean update() {
+		return recipeDAO.update(this);
+	}
+	public static Recipe find(int id) {
+		return recipeDAO.find(id);
+	}
+	public static Recipe findId(Recipe recipe) {
+		RecipeDAO dao = new RecipeDAO();
+		return dao.findId(recipe);
+	}
+	public static List<Integer> findIds(int id) {
+		RecipeDAO dao = new RecipeDAO();
+		return dao.findIds(id);
+	}
 	//GETTERS SETTERS
 	public int getIdRecipe() {
 		return idRecipe;
