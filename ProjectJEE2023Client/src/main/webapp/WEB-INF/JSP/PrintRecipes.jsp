@@ -56,6 +56,7 @@
         		<label>Type :</label>
         		<input type="hidden" name="type" value="<%= afficherType(r.getRecipeGender()) %>">
         		<input type="submit" value="Voir les détails">
+        		<input type="hidden" name="recipeId" value="<%= r.getIdRecipe() %>"/>
     </form>
                 
             </div>
