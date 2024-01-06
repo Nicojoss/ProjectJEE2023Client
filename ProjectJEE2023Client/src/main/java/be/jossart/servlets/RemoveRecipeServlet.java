@@ -3,12 +3,15 @@ package be.jossart.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import be.jossart.javabeans.Person;
 import be.jossart.javabeans.Recipe;
 import be.jossart.javabeans.RecipeIngredient;
 import be.jossart.javabeans.RecipeStep;
@@ -33,7 +36,21 @@ public class RemoveRecipeServlet extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int idRecipe = Integer.parseInt(request.getParameter("idRecipe"));
+    	int idRecipe = Integer.parseInt(request.getParameter("idRecipe"));
+        HttpSession session = request.getSession(false);
+        Person person = (Person) session.getAttribute("person");
+        if (session == null || person == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
+        List<Integer> idsRecipe = Recipe.findIds(person.getIdPerson());
+        if(!idsRecipe.contains(idRecipe))
+        {
+        	request.setAttribute("fail", "Failed to delete the recipe.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
+            dispatcher.forward(request, response);
+        }
 
         List<Integer> recipeStepListIds = RecipeStep.findIds(idRecipe);
         List<Integer> recipeIngredientListIds = RecipeIngredient.findIds(idRecipe);

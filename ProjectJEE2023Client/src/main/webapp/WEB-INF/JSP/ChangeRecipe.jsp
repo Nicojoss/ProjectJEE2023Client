@@ -14,6 +14,32 @@
     <meta charset="UTF-8">
     <title>Update Recipe</title>
     <script>
+    	function addIngredientFields() {
+        	var container = document.getElementById('ingredientFields');
+        	var ingredientNameField = document.createElement('input');
+        	ingredientNameField.type = 'text';
+        	ingredientNameField.name = 'ingredientName';
+        	ingredientNameField.value = '';
+        	ingredientNameField.size = '20';
+        	var ingredientTypeField = document.createElement('select');
+        	ingredientTypeField.name = 'ingredientType';
+        	var types = ['Fruit', 'Vegetable', 'Spicy', 'Other'];
+        	for (var i = 0; i < types.length; i++) {
+            	var option = document.createElement('option');
+           		option.value = types[i];
+            	option.text = types[i];
+            	ingredientTypeField.appendChild(option);
+        	}
+        	ingredientTypeField.value = 'Other';
+        	var ingredientQuantityField = document.createElement('input');
+        	ingredientQuantityField.type = 'text';
+        	ingredientQuantityField.name = 'ingredientQuantity';
+        	ingredientQuantityField.value = '';
+        	ingredientQuantityField.size = '10';
+        	container.appendChild(ingredientNameField);
+        	container.appendChild(ingredientTypeField);
+        	container.appendChild(ingredientQuantityField);
+    	}
         function addField(containerId, fieldName) {
             var container = document.getElementById(containerId);
             var field = document.createElement("input");
@@ -28,7 +54,6 @@
 <body>
     <a href="/ProjectJEE2023Client/HomeServlet">Home Page</a>
     <form action="ChangeRecipeServlet" method="POST">
-        <!-- Recipe Name and Gender -->
         <table border="1" cellspacing="0" cellpadding="5">
             <tr>
                 <td>Recipe Name: </td>
@@ -49,81 +74,77 @@
                     </select>
                 </td>
             </tr>
-
-            <!-- Ingredients Section -->
+			<tr>
+    			<td colspan="2">
+        			<h3>Ingredients</h3>
+   				 </td>
+			</tr>
+				<%
+    				List<RecipeIngredient> recipeIngredients = ((Recipe)request.getAttribute("recipe")).getRecipeIngredientList();
+    				if (recipeIngredients != null) {
+        			for (int i = 0; i < recipeIngredients.size(); i++) {
+            			RecipeIngredient ingredient = recipeIngredients.get(i);
+				%>
             <tr>
-                <td colspan="2">
-                    <h3>Ingredients</h3>
+                <td>Ingredient Name: </td>
+                <td>
+                    <input type="text" name="ingredientName<%= i %>" value="<%= ingredient.getIngredient().getName() %>" size="20"/>
                 </td>
             </tr>
-            <% List<RecipeIngredient> recipeIngredients = ((Recipe)request.getAttribute("recipe")).getRecipeIngredientList();
-               if (recipeIngredients != null) {
-                   for (int i = 0; i < recipeIngredients.size(); i++) {
-                       RecipeIngredient ingredient = recipeIngredients.get(i);
-            %>
-                <tr>
-                    <td>Ingredient Name: </td>
-                    <td>
-                        <input type="text" name="ingredientName<%= i %>" value="<%= ingredient.getIngredient().getName() %>" size="20"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Ingredient Type: </td>
-                    <td>
-                        <select name="ingredientType<%= i %>">
-                            <option value="Fruit" <%= ingredient.getIngredient().getType() == IngredientType.Fruit ? "selected" : "" %>>Fruit</option>
-                            <option value="Vegetable" <%= ingredient.getIngredient().getType() == IngredientType.Vegetable ? "selected" : "" %>>Vegetable</option>
-                            <option value="Spicy" <%= ingredient.getIngredient().getType() == IngredientType.Spicy ? "selected" : "" %>>Spicy</option>
-                            <option value="Other" <%= ingredient.getIngredient().getType() == IngredientType.Other ? "selected" : "" %>>Other</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Ingredient Quantity: </td>
-                    <td>
-                        <input type="text" name="ingredientQuantity<%= i %>" value="<%= ingredient.getQuantity() %>" size="10"/>
-                    </td>
-                </tr>
-            <% }
-               } %>
             <tr>
-                <td colspan="2">
-                    <button type="button" onclick="addField('ingredientFields', 'ingredientName')">Add Ingredient</button>
+                <td>Ingredient Type: </td>
+                <td>
+                    <select name="ingredientType<%= i %>">
+                        <option value="Fruit" <%= ingredient.getIngredient().getType() == IngredientType.Fruit ? "selected" : "" %>>Fruit</option>
+                        <option value="Vegetable" <%= ingredient.getIngredient().getType() == IngredientType.Vegetable ? "selected" : "" %>>Vegetable</option>
+                        <option value="Spicy" <%= ingredient.getIngredient().getType() == IngredientType.Spicy ? "selected" : "" %>>Spicy</option>
+                        <option value="Other" <%= ingredient.getIngredient().getType() == IngredientType.Other ? "selected" : "" %>>Other</option>
+                    </select>
                 </td>
             </tr>
-
-            <!-- Recipe Steps Section -->
+            <tr>
+                <td>Ingredient Quantity: </td>
+                <td>
+                    <input type="text" name="ingredientQuantity<%= i %>" value="<%= ingredient.getQuantity() %>" size="10"/>
+                </td>
+            </tr>
+				<%
+        				}
+    				}
+				%>
+			<tr>
+    			<td colspan="2">
+        			<button type="button" onclick="addIngredientFields()">Add Ingredient</button>
+    			</td>
+			</tr>
             <tr>
                 <td colspan="2">
                     <h3>Recipe Steps</h3>
                 </td>
             </tr>
-            <% List<RecipeStep> recipeSteps = ((Recipe)request.getAttribute("recipe")).getRecipeStepList();
-               if (recipeSteps != null) {
-                   for (RecipeStep step : recipeSteps) {
-            %>
-                <tr>
-                    <td>Step Instruction: </td>
-                    <td>
-                        <textarea name="stepInstruction" rows="3" cols="30"><%= step.getInstruction() %></textarea>
-                    </td>
-                </tr>
-            <% }
-               } %>
+            	<% List<RecipeStep> recipeSteps = ((Recipe)request.getAttribute("recipe")).getRecipeStepList();
+               	   if (recipeSteps != null) {
+                   		for (RecipeStep step : recipeSteps) {
+            	%>
+               		<tr>
+                    	<td>Step Instruction: </td>
+                    	<td>
+                        	<textarea name="stepInstruction" rows="3" cols="30"><%= step.getInstruction() %></textarea>
+                    	</td>
+                	</tr>
+            	<% }
+               	   } %>
             <tr>
                 <td colspan="2">
                     <button type="button" onclick="addField('recipeStepFields', 'stepInstruction')">Add Recipe Step</button>
                 </td>
             </tr>
-
-            <!-- Submit Button -->
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" name="submit" value="Update Recipe"/>
                 </td>
             </tr>
         </table>
-        <!-- Hidden field for Recipe ID -->
         <input type="hidden" name="recipeId" value="<%= ((Recipe)request.getAttribute("recipe")).getIdRecipe() %>"/>
     </form>
 </body>

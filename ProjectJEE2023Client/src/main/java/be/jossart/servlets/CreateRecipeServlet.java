@@ -48,8 +48,9 @@ public class CreateRecipeServlet extends HttpServlet {
 	 */
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
-		 HttpSession session = request.getSession(false);
-	        if (session == null || session.getAttribute("person") == null) {
+		    HttpSession session = request.getSession(false);
+		    Person person = (Person) session.getAttribute("person");
+	        if (session == null || person == null) {
 	            response.sendRedirect("login.jsp");
 	            return;
 	        }
@@ -59,6 +60,14 @@ public class CreateRecipeServlet extends HttpServlet {
 	        String[] ingredientTypes = request.getParameterValues("ingredientTypes");
 	        String[] quantities = request.getParameterValues("quantities");
 	        String[] instructions = request.getParameterValues("instructions");
+	        if(name == null || gender == null|| ingredientNames == null || 
+	        		ingredientTypes == null || quantities == null ||
+	        		instructions == null)
+	        {
+	        	request.setAttribute("fail", "Failed to create the recipe. Please try again.");
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
+	            dispatcher.forward(request, response);
+	        }
 	        RecipeGender recipeGender = RecipeGender.valueOf(gender);
 	        List<Integer> ingredientIds = new ArrayList<>();
 	        for (int i = 0; i < ingredientNames.length; i++) {
@@ -74,7 +83,6 @@ public class CreateRecipeServlet extends HttpServlet {
 	                return;
 	            }
 	        }
-	        Person person = (Person) session.getAttribute("person");
 	        Recipe recipe = new Recipe();
 	        recipe.setName(name);
 	        recipe.setRecipeGender(recipeGender);

@@ -5,16 +5,50 @@
     <meta charset="UTF-8">
     <title>Create Recipe</title>
     <script>
-        function addField(containerId, fieldName) {
+    function addIngredientFields() {
+        var container = document.getElementById('ingredientFields');
+        
+        var ingredientNameField = document.createElement('input');
+        ingredientNameField.type = 'text';
+        ingredientNameField.name = 'ingredientName';
+        ingredientNameField.value = '';
+        ingredientNameField.size = '20';
+        
+        var ingredientTypeField = document.createElement('select');
+        ingredientTypeField.name = 'ingredientType';
+        var types = ['Fruit', 'Vegetable', 'Spicy', 'Other'];
+        for (var i = 0; i < types.length; i++) {
+            var option = document.createElement('option');
+            option.value = types[i];
+            option.text = types[i];
+            ingredientTypeField.appendChild(option);
+        }
+        ingredientTypeField.value = 'Other';
+        var ingredientQuantityField = document.createElement('input');
+        ingredientQuantityField.type = 'text';
+        ingredientQuantityField.name = 'ingredientQuantity';
+        ingredientQuantityField.value = '';
+        ingredientQuantityField.size = '10';
+        container.appendChild(ingredientNameField);
+        container.appendChild(ingredientTypeField);
+        container.appendChild(ingredientQuantityField);
+    }
+
+    function addField(containerId, fieldName) {
+        if (fieldName === 'ingredientName') {
+            addIngredientFields();
+        } else {
             var container = document.getElementById(containerId);
-            var field = document.createElement("input");
-            field.type = "text";
+            var field = document.createElement('input');
+            field.type = 'text';
             field.name = fieldName;
-            field.value = "";
-            field.size = "20";
+            field.value = '';
+            field.size = '20';
             container.appendChild(field);
         }
-    </script>
+    }
+</script>
+
 </head>
 <body>
     <a href="/ProjectJEE2023Client/HomeServlet">Home Page</a>
@@ -23,14 +57,14 @@
             <tr>
                 <td>Recipe Name: </td>
                 <td>
-                    <input type="text" name="recipeName" id="recipeName" value="" size="20"/>
+                    <input type="text" name="recipeName" id="recipeName" value="" size="20" required/>
                 </td>
             </tr>
             <tr>
                 <td>Recipe Gender: </td>
                 <td>
                     <select name="recipeGender">
-                        <option value="Entree">Entree</option>
+                        <option value="Entree" selected>Entree</option>
                         <option value="Dish">Dish</option>
                         <option value="Desserts">Desserts</option>
                         <option value="Cocktails">Cocktails</option>
@@ -38,41 +72,39 @@
                     </select>
                 </td>
             </tr>
-            <!-- Ingredients Section -->
-            <tr>
-                <td colspan="2">
-                    <h3>Ingredients</h3>
-                </td>
-            </tr>
-            <tr id="ingredientFields">
-                <td>Ingredient Name: </td>
-                <td>
-                    <input type="text" name="ingredientName" value="" size="20"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Ingredient Type: </td>
-                <td>
-                    <select name="ingredientType">
-                        <option value="Fruit">Fruit</option>
-                        <option value="Vegetable">Vegetable</option>
-                        <option value="Spicy">Spicy</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Ingredient Quantity: </td>
-                <td>
-                    <input type="text" name="ingredientQuantity" value="" size="10"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="button" onclick="addField('ingredientFields', 'ingredientName')">Add Ingredient</button>
-                </td>
-            </tr>
-            <!-- Recipe Steps Section -->
+			<tr>
+    			<td colspan="2">
+       				<h3>Ingredients</h3>
+    			</td>
+			</tr>
+			<tr id="ingredientFields">
+    			<td>Ingredient Name: </td>
+    			<td>
+        			<input type="text" name="ingredientName" value="" size="20" required/>
+    			</td>
+			</tr>
+			<tr>
+    		<td>Ingredient Type: </td>
+    			<td>
+        			<select name="ingredientType">
+            		<option value="Fruit">Fruit</option>
+            		<option value="Vegetable">Vegetable</option>
+            		<option value="Spicy">Spicy</option>
+            		<option value="Other" selected>Other</option>
+        			</select>
+    			</td>
+			</tr>
+			<tr>
+    			<td>Ingredient Quantity: </td>
+    			<td>
+        			<input type="text" name="ingredientQuantity" value="" size="10"/>
+    			</td>
+			</tr>
+			<tr>
+    			<td colspan="2">
+       				<button type="button" onclick="addIngredientFields()">Add Ingredient</button>
+    			</td>
+			</tr>
             <tr>
                 <td colspan="2">
                     <h3>Recipe Steps</h3>
