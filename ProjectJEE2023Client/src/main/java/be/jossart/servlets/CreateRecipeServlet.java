@@ -1,12 +1,11 @@
 package be.jossart.servlets;
 
 import java.io.IOException;
+
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,39 +19,21 @@ import be.jossart.javabeans.RecipeGender;
 import be.jossart.javabeans.RecipeIngredient;
 import be.jossart.javabeans.RecipeStep;
 
-/**
- * Servlet implementation class CreateRecipeServlet
- */
-@WebServlet("/CreateRecipeServlet")
 public class CreateRecipeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public CreateRecipeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		getServletContext().getRequestDispatcher("/WEB-INF/JSP/CreateRecipe.jsp").forward(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 		    HttpSession session = request.getSession(false);
 		    Person person = (Person) session.getAttribute("person");
 	        if (session == null || person == null) {
-	            response.sendRedirect("login.jsp");
-	            return;
+	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogIn.jsp").forward(request, response);
+	        	return;
 	        }
 	        String name = request.getParameter("name");
 	        String gender = request.getParameter("gender");
@@ -65,8 +46,7 @@ public class CreateRecipeServlet extends HttpServlet {
 	        		instructions == null)
 	        {
 	        	request.setAttribute("fail", "Failed to create the recipe. Please try again.");
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-	            dispatcher.forward(request, response);
+	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        }
 	        RecipeGender recipeGender = RecipeGender.valueOf(gender);
 	        List<Integer> ingredientIds = new ArrayList<>();
@@ -79,7 +59,8 @@ public class CreateRecipeServlet extends HttpServlet {
 	                Ingredient foundIngredient = Ingredient.findId(ingredient);
 	                ingredientIds.add(foundIngredient.getIdIngredient());
 	            } else {
-	                response.sendRedirect("recipeCreationError.jsp");
+	            	request.setAttribute("fail", "Failed to create the recipe. Please try again.");
+	            	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	                return;
 	            }
 	        }
@@ -105,12 +86,10 @@ public class CreateRecipeServlet extends HttpServlet {
 	                recipeStep.create();
 	            }
 	            request.setAttribute("success", "Recipe created successfully!");
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-	            dispatcher.forward(request, response);
+	            getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        } else {
 	            request.setAttribute("fail", "Failed to create the recipe. Please try again.");
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-	            dispatcher.forward(request, response);
+	            getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        }
 	 }
 }

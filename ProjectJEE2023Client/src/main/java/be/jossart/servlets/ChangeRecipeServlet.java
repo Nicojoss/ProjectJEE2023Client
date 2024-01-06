@@ -1,12 +1,11 @@
 package be.jossart.servlets;
 
 import java.io.IOException;
+
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,40 +18,26 @@ import be.jossart.javabeans.RecipeGender;
 import be.jossart.javabeans.RecipeIngredient;
 import be.jossart.javabeans.RecipeStep;
 
-/**
- * Servlet implementation class ChangeRecipeServlet
- */
-@WebServlet("/ChangeRecipeServlet")
 public class ChangeRecipeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public ChangeRecipeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int idRecipe = Integer.parseInt(request.getParameter("idRecipe"));
         HttpSession session = request.getSession(false);
         Person person = (Person) session.getAttribute("person");
         if (session == null || person == null) {
-            response.sendRedirect("login.jsp");
-            return;
+        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogIn.jsp").forward(request, response);
+        	return;
         }
         
         List<Integer> idsRecipe = Recipe.findIds(person.getIdPerson());
         if(!idsRecipe.contains(idRecipe))
         {
         	request.setAttribute("fail", "Failed to update the recipe.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-            dispatcher.forward(request, response);
+        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
         }
         
         Recipe recipe = Recipe.find(idRecipe);
@@ -80,19 +65,14 @@ public class ChangeRecipeServlet extends HttpServlet {
         recipe.setRecipeStepList(recipeSteps);
         request.setAttribute("recipe", recipe);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/ChangeRecipe.jsp");
-        dispatcher.forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/JSP/ChangeRecipe.jsp").forward(request, response);
     }
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("person") == null) {
-            response.sendRedirect("login.jsp");
-            return;
+        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogIn.jsp").forward(request, response);
+        	return;
         }
         
         int recipeId = Integer.parseInt(request.getParameter("recipeId"));
@@ -128,20 +108,17 @@ public class ChangeRecipeServlet extends HttpServlet {
             		ingredientQuantities == null ||stepInstructions == null)
             {
 	        	request.setAttribute("fail", "Failed to update the recipe. Please try again.");
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-	            dispatcher.forward(request, response);
+	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        }
             for (String stepInstruction : stepInstructions) {
                 RecipeStep recipeStep = new RecipeStep(0, stepInstruction, updatedRecipe);
                 recipeStep.update();
             }
             request.setAttribute("success", "Recipe updated successfully!");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-            dispatcher.forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
         } else {
             request.setAttribute("fail", "Failed to update the recipe. Please try again.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("Home.jsp");
-            dispatcher.forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
         }
     }
 }

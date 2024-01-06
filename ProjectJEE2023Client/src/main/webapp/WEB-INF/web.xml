@@ -18,9 +18,21 @@
   <filter-mapping>
   	<filter-name>LoginFilter</filter-name>
   	<servlet-name>ManageAccountServlet</servlet-name>
+  </filter-mapping>	
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
   	<servlet-name>CreateRecipeServlet</servlet-name>
+  </filter-mapping>	
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
   	<servlet-name>ChangeRecipeServlet</servlet-name>
+  </filter-mapping>	
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
   	<servlet-name>RemoveRecipeServlet</servlet-name>
+  </filter-mapping>	
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
   	<servlet-name>ConsultOwnRecipeServlet</servlet-name>
   </filter-mapping>	
 	

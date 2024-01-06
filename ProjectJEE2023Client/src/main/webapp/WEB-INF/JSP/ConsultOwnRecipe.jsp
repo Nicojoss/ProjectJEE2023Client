@@ -24,9 +24,9 @@
                     <td><%= recipe.getName() %></td>
                     <td><%= recipe.getRecipeGender() %></td>
                     <td>
-                        <a href="/ChangeRecipeServlet?idRecipe=<%= recipe.getIdRecipe() %>">Edit</a>
+                        <a href="ChangeRecipeServlet?idRecipe=<%= recipe.getIdRecipe() %>">Edit</a>
                         &nbsp;
-                        <a href="/RemoveRecipeServlet?idRecipe=<%= recipe.getIdRecipe() %>">Delete</a>
+                        <a href="RemoveRecipeServlet?idRecipe=<%= recipe.getIdRecipe() %>">Delete</a>
                     </td>
                 </tr>
             <% } %>
@@ -36,7 +36,7 @@
     <% } %>
 
     <br>
-    <a href="/HomeServlet">Home Page</a>
+    <a href="/ProjectJEE2023Client/HomeServlet">Home Page</a>
 </body>
 </html>
 
