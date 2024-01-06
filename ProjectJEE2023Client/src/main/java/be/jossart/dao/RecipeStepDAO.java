@@ -43,11 +43,14 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
 
     @Override
     public boolean delete(RecipeStep obj) {
+    	MultivaluedMap<String, String> paramsDelete = new MultivaluedMapImpl();
+    	paramsDelete.add("id", String.valueOf(obj.getIdRecipeStep()));
+
         try {
             ClientResponse res = this.resource
-                    .path("recipeStep/delete/" + obj.getIdRecipeStep())
+                    .path("recipeStep/delete")
                     .accept(MediaType.APPLICATION_JSON)
-                    .delete(ClientResponse.class);
+                    .delete(ClientResponse.class,paramsDelete);
 
             return res.getStatus() == 204;
         } catch (Exception ex) {
@@ -59,12 +62,13 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
     @Override
     public boolean update(RecipeStep obj) {
         MultivaluedMap<String, String> paramsPut = new MultivaluedMapImpl();
+        paramsPut.add("id", String.valueOf(obj.getIdRecipeStep()));
         paramsPut.add("instruction", obj.getInstruction());
         paramsPut.add("recipeId", Integer.toString(obj.getRecipe().getIdRecipe()));
 
         try {
             ClientResponse res = this.resource
-                    .path("recipeStep/update/" + obj.getIdRecipeStep())
+                    .path("recipeStep/update")
                     .accept(MediaType.APPLICATION_JSON)
                     .put(ClientResponse.class, paramsPut);
 
@@ -79,7 +83,7 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
     public RecipeStep find(int id) {
         try {
             ClientResponse res = this.resource
-                    .path("recipeStep/get/" + id)
+                    .path("recipeStep2/get/" + id)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -118,7 +122,7 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
             int recipeId = recipeStep.getRecipe().getIdRecipe();
 
             ClientResponse response = this.resource
-                    .path("recipeStep/getId/" + recipeId + "/" + instruction)
+                    .path("recipeStep2/getId/" + recipeId + "/" + instruction)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -127,12 +131,10 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
                 JSONObject json = new JSONObject(responseJson);
 
                 int recipeStepId = json.getInt("idRecipeStep");
-                String retrievedInstruction = json.getString("instruction");
-                int retrievedRecipeId = json.getInt("recipeId");
 
-                Recipe retrievedRecipe = new Recipe(retrievedRecipeId, null, null, null, null, null);
+                Recipe retrievedRecipe = new Recipe(recipeStep.getRecipe().getIdRecipe(), null, null, null, null, null);
 
-                return new RecipeStep(recipeStepId, retrievedInstruction, retrievedRecipe);
+                return new RecipeStep(recipeStepId, recipeStep.getInstruction(), retrievedRecipe);
             } else if (response.getStatus() == 404) {
                 return null;
             } else {
@@ -147,7 +149,7 @@ public class RecipeStepDAO extends DAO<RecipeStep> {
     public List<Integer> findIds(int recipeId) {
         try {
             ClientResponse response = this.resource
-                    .path("recipeStep/findIds/" + recipeId)
+                    .path("recipeStep2/findIds/" + recipeId)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 

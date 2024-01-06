@@ -2,10 +2,10 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import be.jossart.dao.DAO;
 import be.jossart.dao.RecipeDAO;
 
@@ -116,5 +116,9 @@ public class Recipe implements Serializable{
 		return idRecipe == other.idRecipe && Objects.equals(recipeIngredientList, other.recipeIngredientList)
 				&& Objects.equals(name, other.name) && Objects.equals(person, other.person)
 				&& recipeGender == other.recipeGender && Objects.equals(recipeStepList, other.recipeStepList);
+	}
+	public static List<Recipe> findRecipe(String recherche){
+		RecipeDAO dao = new RecipeDAO();
+		return dao.findRecipe(recherche);
 	}
 }

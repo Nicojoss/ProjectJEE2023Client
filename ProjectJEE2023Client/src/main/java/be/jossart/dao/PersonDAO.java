@@ -56,7 +56,7 @@ public class PersonDAO extends DAO<Person> {
     public Person find(int id) {
         try {
             ClientResponse res = this.resource
-                    .path("person/get/" + id)
+                    .path("person2/get/" + id)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -94,7 +94,7 @@ public class PersonDAO extends DAO<Person> {
             int idPerson = person.getIdPerson();
 
             ClientResponse response = this.resource
-                    .path("person/getId/" + idPerson)
+                    .path("person2/getId/" + idPerson)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -103,12 +103,8 @@ public class PersonDAO extends DAO<Person> {
                 JSONObject json = new JSONObject(responseJson);
 
                 int retrievedIdPerson = json.getInt("idPerson");
-                String retrievedFirstname = json.getString("firstname");
-                String retrievedLastname = json.getString("lastname");
-                String retrievedUsername = json.getString("username");
-                String retrievedPassword = json.getString("password");
 
-                return new Person(retrievedIdPerson, retrievedFirstname, retrievedLastname, retrievedUsername, retrievedPassword);
+                return new Person(retrievedIdPerson, person.getFirstname(), person.getLastname(), person.getUsername(), person.getPassword());
             } else if (response.getStatus() == 404) {
                 return null;
             } else {

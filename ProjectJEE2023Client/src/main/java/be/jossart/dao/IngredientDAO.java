@@ -43,11 +43,14 @@ public class IngredientDAO extends DAO<Ingredient>{
 
 	@Override
     public boolean delete(Ingredient obj) {
+		MultivaluedMap<String, String> paramsDelete = new MultivaluedMapImpl();
+		paramsDelete.add("id", String.valueOf(obj.getIdIngredient()));
+		
         try {
             ClientResponse res = this.resource
-                    .path("ingredient/delete/" + obj.getIdIngredient())
+                    .path("ingredient/delete")
                     .accept(MediaType.APPLICATION_JSON)
-                    .delete(ClientResponse.class);
+                    .delete(ClientResponse.class,paramsDelete);
 
             return res.getStatus() == 204;
         } catch (Exception ex) {
@@ -59,11 +62,12 @@ public class IngredientDAO extends DAO<Ingredient>{
 	@Override
     public boolean update(Ingredient obj) {
         MultivaluedMap<String, String> paramsPut = new MultivaluedMapImpl();
+        paramsPut.add("id", String.valueOf(obj.getIdIngredient()));
         paramsPut.add("name", obj.getName());
         paramsPut.add("type", obj.getType().toString());
         try {
             ClientResponse res = this.resource
-                    .path("ingredient/update/" + obj.getIdIngredient())
+                    .path("ingredient/update")
                     .accept(MediaType.APPLICATION_JSON)
                     .put(ClientResponse.class, paramsPut);
 
@@ -78,7 +82,7 @@ public class IngredientDAO extends DAO<Ingredient>{
 	public Ingredient find(int id) {
 	    try {
 	        ClientResponse res = this.resource
-	                .path("ingredient/get/" + id)
+	                .path("ingredient2/get/" + id)
 	                .accept(MediaType.APPLICATION_JSON)
 	                .get(ClientResponse.class);
 
@@ -117,7 +121,7 @@ public class IngredientDAO extends DAO<Ingredient>{
 	        String type = ingredient.getType().toString();
 
 	        ClientResponse response = this.resource
-	                .path("ingredient/getId/" + name + "/" + type)
+	                .path("ingredient2/getId/" + name + "/" + type)
 	                .accept(MediaType.APPLICATION_JSON)
 	                .get(ClientResponse.class);
 
@@ -126,10 +130,8 @@ public class IngredientDAO extends DAO<Ingredient>{
 	            JSONObject json = new JSONObject(responseJson);
 
 	            int ingredientId = json.getInt("idIngredient");
-	            String retrievedName = json.getString("name");
-	            String retrievedType = json.getString("type");
 
-	            return new Ingredient(ingredientId, retrievedName, IngredientType.valueOf(retrievedType), null);
+	            return new Ingredient(ingredientId, name, IngredientType.valueOf(type), null);
 	        } else if (response.getStatus() == 404) {
 	            return null;
 	        } else {

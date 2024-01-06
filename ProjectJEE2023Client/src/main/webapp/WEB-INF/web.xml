@@ -41,10 +41,17 @@
   	<servlet-name>HomeServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.HomeServlet</servlet-class>
   </servlet>
-
-  <servlet>
+<servlet>
   	<servlet-name>SignInServlet</servlet-name>
   	<servlet-class>be.jossart.servlets.SignInServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>SearchRecipeServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.SearchRecipeServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>RecipeDetailsServlet</servlet-name>
+  	<servlet-class>be.jossart.servlets.RecipeDetailsServlet</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>LogInServlet</servlet-name>
@@ -110,30 +117,25 @@
   <servlet-mapping>
   	<servlet-name>CreateRecipeServlet</servlet-name>
   	<url-pattern>/CreateRecipeServlet</url-pattern>
-  	<url-pattern>/createrecipe</url-pattern>
-  	<url-pattern>/CreateRecipe</url-pattern>
-  	<url-pattern>/Createrecipe</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>ChangeRecipeServlet</servlet-name>
-  	<url-pattern>/ChangeRecipeServlet</url-pattern>
-  	<url-pattern>/changerecipe</url-pattern>
-  	<url-pattern>/ChangeRecipe</url-pattern>
-  	<url-pattern>/Changerecipe</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>RemoveRecipeServlet</servlet-name>
-  	<url-pattern>/RemoveRecipeServlet</url-pattern>
-  	<url-pattern>/removerecipe</url-pattern>
-  	<url-pattern>/RemoveRecipe</url-pattern>
-  	<url-pattern>/Removerecipe</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>ConsultOwnRecipeServlet</servlet-name>
   	<url-pattern>/ConsultOwnRecipeServlet</url-pattern>
-  	<url-pattern>/consultcwncecipeServlet</url-pattern>
-  	<url-pattern>/ConsultownRecipeservlet</url-pattern>
-  	<url-pattern>/ConsultOwnRecipeservlet</url-pattern>
-  	<url-pattern>/ConsultOwnRecipeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ChangeRecipeServlet</servlet-name>
+  	<url-pattern>/ChangeRecipeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RemoveRecipeServlet</servlet-name>
+  	<url-pattern>/RemoveRecipeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SearchRecipeServlet</servlet-name>
+  	<url-pattern>/SearchRecipeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RecipeDetailsServlet</servlet-name>
+  	<url-pattern>/RecipeDetailsServlet</url-pattern>
   </servlet-mapping>
 </web-app>

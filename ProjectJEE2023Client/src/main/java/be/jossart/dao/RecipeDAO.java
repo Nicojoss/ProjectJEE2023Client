@@ -1,19 +1,19 @@
 package be.jossart.dao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.json.JSONArray;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.ws.rs.core.MultivaluedMap;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
 import be.jossart.javabeans.Person;
 import be.jossart.javabeans.Recipe;
 import be.jossart.javabeans.RecipeGender;
@@ -43,29 +43,30 @@ public class RecipeDAO extends DAO<Recipe> {
 
     @Override
     public boolean delete(Recipe obj) {
+    	MultivaluedMap<String, String> paramsDelete = new MultivaluedMapImpl();
+    	paramsDelete.add("id", String.valueOf(obj.getIdRecipe()));
         try {
             ClientResponse res = this.resource
-                    .path("recipe/delete/" + obj.getIdRecipe())
+                    .path("recipe/delete")
                     .accept(MediaType.APPLICATION_JSON)
-                    .delete(ClientResponse.class);
-
+                    .delete(ClientResponse.class,paramsDelete);
             return res.getStatus() == 204;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return false;
         }
     }
-
     @Override
     public boolean update(Recipe obj) {
         MultivaluedMap<String, String> paramsPut = new MultivaluedMapImpl();
+        paramsPut.add("id", String.valueOf(obj.getIdRecipe()));
         paramsPut.add("name", obj.getName());
         paramsPut.add("gender", obj.getRecipeGender().toString());
         paramsPut.add("idPerson", Integer.toString(obj.getPerson().getIdPerson()));
 
         try {
             ClientResponse res = this.resource
-                    .path("recipe/update/" + obj.getIdRecipe())
+                    .path("recipe/update")
                     .accept(MediaType.APPLICATION_JSON)
                     .put(ClientResponse.class, paramsPut);
 
@@ -75,12 +76,34 @@ public class RecipeDAO extends DAO<Recipe> {
             return false;
         }
     }
+	public List<Recipe> findRecipe(String recherche){
+		String responseJSON = this.resource.path("recipe2").path(String.valueOf(recherche)).accept(MediaType.APPLICATION_JSON).get(String.class);
+		List<Recipe> recipes = new ArrayList<Recipe>();
+		JSONArray array = new JSONArray(responseJSON);
+		ObjectMapper mapper = new ObjectMapper();
+		for(int i =0;i<array.length();i++) {
+			String personJSON = array.get(i).toString();
+			try {
+				recipes.add(mapper.readValue(personJSON,Recipe.class));
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return recipes;
+	}
 
     @Override
     public Recipe find(int id) {
         try {
             ClientResponse res = this.resource
-                    .path("recipe/get/" + id)
+                    .path("recipe2/get/" + id)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -124,7 +147,7 @@ public class RecipeDAO extends DAO<Recipe> {
             int idPerson = recipe.getPerson().getIdPerson();
 
             ClientResponse response = this.resource
-                    .path("recipe/getId/" + name + "/" + gender + "/" + idPerson)
+                    .path("recipe2/getId/" + name + "/" + gender + "/" + idPerson)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -133,14 +156,8 @@ public class RecipeDAO extends DAO<Recipe> {
                 JSONObject json = new JSONObject(responseJson);
 
                 int recipeId = json.getInt("idRecipe");
-                String retrievedName = json.getString("name");
-                String retrievedGender = json.getString("recipeGender");
-                int retrievedIdPerson = json.getInt("idPerson");
 
-                Person retrievedPerson = new Person(retrievedIdPerson, null, null, null, null);
-                RecipeGender retrievedRecipeGender = RecipeGender.valueOf(retrievedGender);
-
-                return new Recipe(recipeId, retrievedName, retrievedPerson, retrievedRecipeGender, null, null);
+                return new Recipe(recipeId, null, null, null, null, null);
             } else if (response.getStatus() == 404) {
                 return null;
             } else {
@@ -156,7 +173,7 @@ public class RecipeDAO extends DAO<Recipe> {
     public List<Integer> findIds(int idPerson) {
         try {
             ClientResponse response = this.resource
-                    .path("recipe/findIds/" + idPerson)
+                    .path("recipe2/findIds/" + idPerson)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 

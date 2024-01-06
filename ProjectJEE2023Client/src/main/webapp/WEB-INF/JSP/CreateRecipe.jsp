@@ -10,12 +10,12 @@
         
         var ingredientNameField = document.createElement('input');
         ingredientNameField.type = 'text';
-        ingredientNameField.name = 'ingredientName';
+        ingredientNameField.name = 'ingredientNames';
         ingredientNameField.value = '';
         ingredientNameField.size = '20';
         
         var ingredientTypeField = document.createElement('select');
-        ingredientTypeField.name = 'ingredientType';
+        ingredientTypeField.name = 'ingredientTypes';
         var types = ['Fruit', 'Vegetable', 'Spicy', 'Other'];
         for (var i = 0; i < types.length; i++) {
             var option = document.createElement('option');
@@ -26,7 +26,7 @@
         ingredientTypeField.value = 'Other';
         var ingredientQuantityField = document.createElement('input');
         ingredientQuantityField.type = 'text';
-        ingredientQuantityField.name = 'ingredientQuantity';
+        ingredientQuantityField.name = 'ingredientQuantities';
         ingredientQuantityField.value = '';
         ingredientQuantityField.size = '10';
         container.appendChild(ingredientNameField);
@@ -37,6 +37,12 @@
     function addField(containerId, fieldName) {
         if (fieldName === 'ingredientName') {
             addIngredientFields();
+        } else if (fieldName === 'stepInstruction') {
+            var instructionField = document.createElement('textarea');
+            instructionField.name = 'stepInstructions';
+            instructionField.rows = '3';
+            instructionField.cols = '30';
+            container.appendChild(instructionField);
         } else {
             var container = document.getElementById(containerId);
             var field = document.createElement('input');

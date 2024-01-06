@@ -43,11 +43,15 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
 
     @Override
     public boolean delete(RecipeIngredient obj) {
+    	MultivaluedMap<String, String> paramsDelete = new MultivaluedMapImpl();
+    	paramsDelete.add("idRecipe", String.valueOf(obj.getIdRecipe()));
+    	paramsDelete.add("idIngredient", String.valueOf(obj.getIdIngredient()));
+
         try {
             ClientResponse res = this.resource
-                    .path("recipeIngredient/delete/" + obj.getIdRecipe() + "/" + obj.getIdIngredient())
+                    .path("recipeIngredient/delete")
                     .accept(MediaType.APPLICATION_JSON)
-                    .delete(ClientResponse.class);
+                    .delete(ClientResponse.class,paramsDelete);
 
             return res.getStatus() == 204;
         } catch (Exception ex) {
@@ -65,7 +69,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
 
         try {
             ClientResponse res = this.resource
-                    .path("recipeIngredient/update/" + obj.getIdRecipe() + "/" + obj.getIdIngredient())
+                    .path("recipeIngredient/update")
                     .accept(MediaType.APPLICATION_JSON)
                     .put(ClientResponse.class, paramsPut);
 
@@ -85,7 +89,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
     public RecipeIngredient find(int idRecipe, int idIngredient) {
         try {
             ClientResponse res = this.resource
-                    .path("recipeIngredient/get/" + idRecipe + "/" + idIngredient)
+                    .path("recipeIngredient2/get/" + idRecipe + "/" + idIngredient)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -124,7 +128,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
             double quantity = recipeIngredient.getQuantity();
 
             ClientResponse response = this.resource
-                    .path("recipeIngredient/getId/" + idRecipe + "/" + quantity)
+                    .path("recipeIngredient2/getId/" + idRecipe + "/" + quantity)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
@@ -132,10 +136,8 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
                 String responseJson = response.getEntity(String.class);
                 JSONObject json = new JSONObject(responseJson);
 
-                int retrievedRecipeId = json.getInt("idRecipe");
                 int retrievedIngredientId = json.getInt("idIngredient");
-                double retrievedQuantity = json.getDouble("quantity");
-                return new RecipeIngredient(retrievedRecipeId, retrievedIngredientId, retrievedQuantity, null, null);
+                return new RecipeIngredient(recipeIngredient.getIdRecipe(), retrievedIngredientId, recipeIngredient.getQuantity(), null, null);
             } else if (response.getStatus() == 404) {
                 return null;
             } else {
@@ -150,7 +152,7 @@ public class RecipeIngredientDAO extends DAO<RecipeIngredient> {
     public List<Integer> findIds(int recipeId) {
         try {
             ClientResponse response = this.resource
-                    .path("recipeIngredient/findIds/" + recipeId)
+                    .path("recipeIngredient2/findIds/" + recipeId)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 

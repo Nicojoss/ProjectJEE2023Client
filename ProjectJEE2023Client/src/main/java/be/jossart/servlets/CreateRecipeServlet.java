@@ -1,8 +1,6 @@
 package be.jossart.servlets;
 
 import java.io.IOException;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -35,15 +33,15 @@ public class CreateRecipeServlet extends HttpServlet {
 	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogIn.jsp").forward(request, response);
 	        	return;
 	        }
-	        String name = request.getParameter("name");
-	        String gender = request.getParameter("gender");
+	        String name = request.getParameter("recipeName");
+	        String gender = request.getParameter("recipeGender");
 	        String[] ingredientNames = request.getParameterValues("ingredientNames");
 	        String[] ingredientTypes = request.getParameterValues("ingredientTypes");
-	        String[] quantities = request.getParameterValues("quantities");
-	        String[] instructions = request.getParameterValues("instructions");
+	        String[] ingredientQuantities = request.getParameterValues("ingredientQuantities");
+	        String[] stepInstructions = request.getParameterValues("stepInstructions");
 	        if(name == null || gender == null|| ingredientNames == null || 
-	        		ingredientTypes == null || quantities == null ||
-	        		instructions == null)
+	        		ingredientTypes == null || ingredientQuantities == null ||
+	        		stepInstructions == null)
 	        {
 	        	request.setAttribute("fail", "Failed to create the recipe. Please try again.");
 	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
@@ -76,10 +74,10 @@ public class CreateRecipeServlet extends HttpServlet {
 	                RecipeIngredient recipeIngredient = new RecipeIngredient();
 	                recipeIngredient.setIdRecipe(foundRecipe.getIdRecipe());
 	                recipeIngredient.setIdIngredient(ingredientIds.get(i));
-	                recipeIngredient.setQuantity(Double.parseDouble(quantities[i]));
+	                recipeIngredient.setQuantity(Double.parseDouble(ingredientQuantities[i]));
 	                recipeIngredient.create();
 	            }
-	            for (String instruction : instructions) {
+	            for (String instruction : stepInstructions) {
 	                RecipeStep recipeStep = new RecipeStep();
 	                recipeStep.setInstruction(instruction);
 	                recipeStep.setRecipe(foundRecipe);
