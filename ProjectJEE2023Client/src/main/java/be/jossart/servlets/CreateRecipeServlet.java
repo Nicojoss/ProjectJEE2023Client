@@ -35,23 +35,22 @@ public class CreateRecipeServlet extends HttpServlet {
 	        }
 	        String name = request.getParameter("recipeName");
 	        String gender = request.getParameter("recipeGender");
-	        String[] ingredientNames = request.getParameterValues("ingredientNames");
-	        String[] ingredientTypes = request.getParameterValues("ingredientTypes");
-	        String[] ingredientQuantities = request.getParameterValues("ingredientQuantities");
-	        String[] stepInstructions = request.getParameterValues("stepInstructions");
-	        if(name == null || gender == null|| ingredientNames == null || 
-	        		ingredientTypes == null || ingredientQuantities == null ||
-	        		stepInstructions == null)
+	        String ingredientName = request.getParameter("ingredientName");
+	        String ingredientType = request.getParameter("ingredientType");
+	        String ingredientQuantity = request.getParameter("ingredientQuantity");
+	        String stepInstruction = request.getParameter("stepInstruction");
+	        if(name == null || gender == null|| ingredientName == null || 
+	        		ingredientType == null || ingredientQuantity == null ||
+	        		stepInstruction == null)
 	        {
 	        	request.setAttribute("fail", "Failed to create the recipe. Please try again.");
 	        	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        }
 	        RecipeGender recipeGender = RecipeGender.valueOf(gender);
 	        List<Integer> ingredientIds = new ArrayList<>();
-	        for (int i = 0; i < ingredientNames.length; i++) {
 	            Ingredient ingredient = new Ingredient();
-	            ingredient.setName(ingredientNames[i]);
-	            ingredient.setType(IngredientType.valueOf(ingredientTypes[i]));
+	            ingredient.setName(ingredientName);
+	            ingredient.setType(IngredientType.valueOf(ingredientType));
 
 	            if (ingredient.create()) {
 	                Ingredient foundIngredient = Ingredient.findId(ingredient);
@@ -61,7 +60,6 @@ public class CreateRecipeServlet extends HttpServlet {
 	            	getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	                return;
 	            }
-	        }
 	        Recipe recipe = new Recipe();
 	        recipe.setName(name);
 	        recipe.setRecipeGender(recipeGender);
@@ -74,15 +72,13 @@ public class CreateRecipeServlet extends HttpServlet {
 	                RecipeIngredient recipeIngredient = new RecipeIngredient();
 	                recipeIngredient.setIdRecipe(foundRecipe.getIdRecipe());
 	                recipeIngredient.setIdIngredient(ingredientIds.get(i));
-	                recipeIngredient.setQuantity(Double.parseDouble(ingredientQuantities[i]));
+	                recipeIngredient.setQuantity(Double.parseDouble(ingredientQuantity));
 	                recipeIngredient.create();
 	            }
-	            for (String instruction : stepInstructions) {
 	                RecipeStep recipeStep = new RecipeStep();
-	                recipeStep.setInstruction(instruction);
+	                recipeStep.setInstruction(stepInstruction);
 	                recipeStep.setRecipe(foundRecipe);
 	                recipeStep.create();
-	            }
 	            request.setAttribute("success", "Recipe created successfully!");
 	            getServletContext().getRequestDispatcher("/WEB-INF/JSP/Home.jsp").forward(request, response);
 	        } else {

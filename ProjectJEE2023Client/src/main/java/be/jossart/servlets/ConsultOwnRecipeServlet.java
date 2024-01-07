@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import be.jossart.dao.RecipeDAO;
+import be.jossart.javabeans.Person;
 import be.jossart.javabeans.Recipe;
 
 public class ConsultOwnRecipeServlet extends HttpServlet {
@@ -23,8 +24,8 @@ public class ConsultOwnRecipeServlet extends HttpServlet {
         	getServletContext().getRequestDispatcher("/WEB-INF/JSP/LogIn.jsp").forward(request, response);
         	return;
         }
-
-        int idPerson = (int) session.getAttribute("idPerson");
+        Person person = (Person) session.getAttribute("person");
+        int idPerson = person.getIdPerson();
 
         RecipeDAO recipeDAO = new RecipeDAO();
         List<Integer> recipeIds = recipeDAO.findIds(idPerson);
