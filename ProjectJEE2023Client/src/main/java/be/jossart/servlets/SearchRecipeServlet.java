@@ -28,8 +28,8 @@ public class SearchRecipeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String recherche = request.getParameter("recherche");
 		if (recherche.isEmpty()) {
-			request.setAttribute("error", "Veuillez entrer un nom à rechercher !");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/ErrorsJSP/Error.jsp");
+			request.setAttribute("fail", "Veuillez entrer un nom à rechercher !");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSP/Home.jsp");
 			dispatcher.forward(request, response);
 		}else {
 			System.out.println("recherche : " +recherche);
