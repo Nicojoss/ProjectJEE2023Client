@@ -25,6 +25,7 @@
         <button onclick="window.location='/ProjectJEE2023Client/LogInServlet'">Log In</button>
         <button onclick="window.location='/ProjectJEE2023Client/SignInServlet'">Sign In</button>
     <% } else { %>
+    	<%@ include file="LogoutPartialView.jsp" %>
         <button onclick="window.location='/ProjectJEE2023Client/ManageAccountServlet'">Manage my account</button>
         <button onclick="window.location='/ProjectJEE2023Client/CreateRecipeServlet'">Create a new recipe</button>
         <button onclick="window.location='/ProjectJEE2023Client/ConsultOwnRecipeServlet'">Consult your recipe</button>

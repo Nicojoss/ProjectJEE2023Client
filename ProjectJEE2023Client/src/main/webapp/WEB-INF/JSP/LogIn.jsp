@@ -7,17 +7,16 @@
 <title>Welcome to the login page!</title>
 </head>
 <body>
-<a href="/ProjectJEE2023Client/home">Home Page</a>
-<%if (request.getAttribute("success") != null) {%>
-        <div class="alert alert-success">
+	<a href="/ProjectJEE2023Client/home">Home Page</a>
+	<%if (request.getAttribute("success") != null) {%>
+       <div class="alert alert-success">
        <p><%= request.getAttribute("success")%></p> 
        </div>
     <% } %>
-    	<%
-        if (request.getAttribute("fail") != null) {%>
+    <% if (request.getAttribute("fail") != null) {%>
         <div class="alert alert-danger">
-       <p><%= request.getAttribute("fail")%></p> 
-       </div>
+      	<p><%= request.getAttribute("fail")%></p> 
+       	</div>
     <% } %>
 	<form action="LogInServlet" method="POST">
 		<table border="1" cellspacing="0" cellpadding="5">

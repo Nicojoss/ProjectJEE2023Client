@@ -19,6 +19,7 @@
     <title>Recipe Details</title>
 </head>
 <body>
+	<p><%@ include file="LogoutPartialView.jsp" %></p>
     <h1>Recipe Details</h1>
 	<% Recipe recipe = (Recipe)request.getAttribute("recipe"); %>
     <% if (recipe != null) { %>
